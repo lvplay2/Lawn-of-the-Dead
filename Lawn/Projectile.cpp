@@ -12,20 +12,20 @@
 #include "../Sexy.TodLib/Attachment.h"
 
 ProjectileDefinition gProjectileDefinition[] = {  
-	{ ProjectileType::PROJECTILE_PEA,           0,  20  },
-	{ ProjectileType::PROJECTILE_SNOWPEA,       0,  20  },
+	{ ProjectileType::PROJECTILE_PEA,           1,  20  },
+	{ ProjectileType::PROJECTILE_SNOWPEA,       2,  20  },
 	{ ProjectileType::PROJECTILE_CABBAGE,       0,  40  },
-	{ ProjectileType::PROJECTILE_MELON,         0,  80  },
-	{ ProjectileType::PROJECTILE_PUFF,          0,  20  },
-	{ ProjectileType::PROJECTILE_WINTERMELON,   0,  80  },
-	{ ProjectileType::PROJECTILE_FIREBALL,      0,  40  },
-	{ ProjectileType::PROJECTILE_STAR,          0,  20  },
-	{ ProjectileType::PROJECTILE_SPIKE,         0,  20  },
-	{ ProjectileType::PROJECTILE_BASKETBALL,    0,  75  },
-	{ ProjectileType::PROJECTILE_KERNEL,        0,  20  },
+	{ ProjectileType::PROJECTILE_MELON,         4,  80  },
+	{ ProjectileType::PROJECTILE_PUFF,          6,  20  },
+	{ ProjectileType::PROJECTILE_WINTERMELON,   9,  80  },
+	{ ProjectileType::PROJECTILE_FIREBALL,      2,  40  },
+	{ ProjectileType::PROJECTILE_STAR,          13,  20  },
+	{ ProjectileType::PROJECTILE_SPIKE,         12,  20  },
+	{ ProjectileType::PROJECTILE_BASKETBALL,    15,  75  },
+	{ ProjectileType::PROJECTILE_KERNEL,        17,  20  },
 	{ ProjectileType::PROJECTILE_COBBIG,        0,  300 },
-	{ ProjectileType::PROJECTILE_BUTTER,        0,  40  },
-	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    0,  20  }
+	{ ProjectileType::PROJECTILE_BUTTER,        18,  40  },
+	{ ProjectileType::PROJECTILE_ZOMBIE_PEA,    1,  20  }
 };
 
 Projectile::Projectile()
@@ -948,69 +948,42 @@ void Projectile::Draw(Graphics* g)
 
 	Image* aImage;
 	float aScale = 1.0f;
-	if (mProjectileType == ProjectileType::PROJECTILE_COBBIG)
+
+	switch (mProjectileType)
 	{
-		aImage = IMAGE_REANIM_COBCANNON_COB;
+	case PROJECTILE_PEA:
+	case PROJECTILE_SNOWPEA:
+	case PROJECTILE_CABBAGE:
+	case PROJECTILE_MELON:
+	case PROJECTILE_WINTERMELON:
+	case PROJECTILE_STAR:
+	case PROJECTILE_SPIKE:
+	case PROJECTILE_BUTTER:
+	case PROJECTILE_ZOMBIE_PEA:
+	case PROJECTILE_FIREBALL:
+		aImage = IMAGE_PROJECTILES;
+		break;
+	case PROJECTILE_COBBIG:
+		aImage = IMAGE_PROJECTILES;
 		aScale = 0.9f;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_PEA || mProjectileType == ProjectileType::PROJECTILE_ZOMBIE_PEA)
-	{
-		aImage = IMAGE_PROJECTILEPEA;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_SNOWPEA)
-	{
-		aImage = IMAGE_PROJECTILESNOWPEA;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_FIREBALL)
-	{
-		aImage = nullptr;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_SPIKE)
-	{
-		aImage = IMAGE_PROJECTILECACTUS;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_STAR)
-	{
-		aImage = IMAGE_PROJECTILE_STAR;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_PUFF)
-	{
-		aImage = IMAGE_PUFFSHROOM_PUFF1;
+		break;
+	case PROJECTILE_PUFF:
+		aImage = IMAGE_PROJECTILES;
 		aScale = TodAnimateCurveFloat(0, 30, mProjectileAge, 0.3f, 1.0f, TodCurves::CURVE_LINEAR);
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_BASKETBALL)
-	{
-		aImage = IMAGE_REANIM_ZOMBIE_CATAPULT_BASKETBALL;
+		break;
+	case PROJECTILE_BASKETBALL:
 		aScale = 1.1f;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_CABBAGE)
-	{
-		aImage = IMAGE_REANIM_CABBAGEPULT_CABBAGE;
-		aScale = 1.0f;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_KERNEL)
-	{
-		aImage = IMAGE_REANIM_CORNPULT_KERNAL;
+		aImage = IMAGE_PROJECTILES;
+		break;
+	case PROJECTILE_KERNEL:
 		aScale = 0.95f;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_BUTTER)
-	{
-		aImage = IMAGE_REANIM_CORNPULT_BUTTER;
+		aImage = IMAGE_PROJECTILES;
+		break;
 		aScale = 0.8f;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_MELON)
-	{
-		aImage = IMAGE_REANIM_MELONPULT_MELON;
-		aScale = 1.0f;
-	}
-	else if (mProjectileType == ProjectileType::PROJECTILE_WINTERMELON)
-	{
-		aImage = IMAGE_REANIM_WINTERMELON_PROJECTILE;
-		aScale = 1.0f;
-	}
-	else
-	{
-		TOD_ASSERT();
+		aImage = IMAGE_PROJECTILES;
+		break;
+	default:
+		break;
 	}
 
 	bool aMirror = false;

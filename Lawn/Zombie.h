@@ -57,7 +57,13 @@ enum ZombieParts
     PART_ARM_LEASH,
     PART_ARM_FLAG,
     PART_POGO,
-    PART_DIGGER
+    PART_HEAD_DIZZY,
+    PART_SHIELD,
+    PART_GLASSES,
+    PART_DIGGER,
+    PART_BODY_DANCE_MJ,
+    PART_BODY_DANCE,
+    PART_HELMET,
 };
 
 class ZombieDrawPosition
@@ -391,6 +397,7 @@ public:
     void                            BurnRow(int theRow);
     void                            SetupReanimForLostHead();
     void                            SetupReanimForLostArm(unsigned int theDamageFlags);
+    int                             GetHelmIndex(ZombieType theZombieType);
     bool                            IsSquashTarget(Plant* theExcept);
     static /*inline*/ bool			IsZombotany(ZombieType theZombieType);
 };

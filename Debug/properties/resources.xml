@@ -52,7 +52,25 @@
 <Font id="BRIANNETOD12" path="BrianneTod12.txt" />
   
 </Resources>
+
+<Resources id="LoadingLawnOfTheDead">
   
+<SetDefaults path="lotd" idprefix="IMAGE_" />
+<Image id="ZOMBIE" path="zombie" cols="12" rows="20"/>
+<Image id="ZOMBIE_DOG" path="zombiedog" />
+<Image id="ZOMBIE_PROPELLER" path="propellerzombie" />
+<Image id="PROJECTILES" path="projectile" cols="10" rows="19"/>
+<Image id="METAL_HELMET" path="metal_helm" />
+<Image id="GOLD_HELMET" path="gold_helm" />
+<Image id="BLACK_HELMET" path="black_helm" />
+<Image id="GOLD_SHIELD" path="gold_shield" />
+<Image id="PROPELLER" path="propeller" />
+<Image id="PICKAXE" path="pickaxe" />
+<Image id="POGO" path="pogo" />
+<Image id="ARM_FLAG" path="arm_flag" />
+
+</Resources>
+	
 <Resources id="LoadingImages">
   
 <SetDefaults path="images" idprefix="IMAGE_" />
@@ -82,7 +100,7 @@
 
 
 <SetDefaults path="images" idprefix="IMAGE_" />
-
+	
 <!-- Screens -->
 <Image id="SEEDCHOOSER_BACKGROUND" path="SeedChooser_BackGround"  />
 <Image id="SEEDCHOOSER_BUTTON" path="SeedChooser_Button" />

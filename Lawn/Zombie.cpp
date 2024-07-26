@@ -18,14 +18,14 @@
 #include "../Sexy.TodLib/TodParticle.h"
 
 ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {  
-    { ZOMBIE_NORMAL,            REANIM_ZOMBIE,              1,      1,      1,      4000,   _S("ZOMBIE")},
-    { ZOMBIE_FLAG,              REANIM_ZOMBIE,              1,      1,      1,      0,      _S("FLAG_ZOMBIE")},
-    { ZOMBIE_TRAFFIC_CONE,      REANIM_ZOMBIE,              2,      3,      1,      4000,   _S("CONEHEAD_ZOMBIE")},
+    { ZOMBIE_NORMAL,            REANIM_NONE,              1,      1,      1,      4000,   _S("ZOMBIE")},
+    { ZOMBIE_FLAG,              REANIM_NONE,              1,      1,      1,      0,      _S("FLAG_ZOMBIE")},
+    { ZOMBIE_TRAFFIC_CONE,      REANIM_NONE,              2,      3,      1,      4000,   _S("CONEHEAD_ZOMBIE")},
     { ZOMBIE_POLEVAULTER,       REANIM_POLEVAULTER,         2,      6,      5,      2000,   _S("POLE_VAULTING_ZOMBIE")},
-    { ZOMBIE_PAIL,              REANIM_ZOMBIE,              4,      8,      1,      3000,   _S("BUCKETHEAD_ZOMBIE")},
+    { ZOMBIE_PAIL,              REANIM_NONE,              4,      8,      1,      3000,   _S("BUCKETHEAD_ZOMBIE")},
     { ZOMBIE_NEWSPAPER,         REANIM_ZOMBIE_NEWSPAPER,    2,      11,     1,      1000,   _S("NEWSPAPER_ZOMBIE")},
     { ZOMBIE_DOOR,              REANIM_ZOMBIE,              4,      13,     5,      3500,   _S("SCREEN_DOOR_ZOMBIE")},
-    { ZOMBIE_FOOTBALL,          REANIM_ZOMBIE_FOOTBALL,     7,      16,     5,      2000,   _S("FOOTBALL_ZOMBIE")},
+    { ZOMBIE_FOOTBALL,          REANIM_NONE,     7,      16,     5,      2000,   _S("FOOTBALL_ZOMBIE")},
     { ZOMBIE_DANCER,            REANIM_DANCER,              5,      18,     5,      1000,   _S("DANCING_ZOMBIE")},
     { ZOMBIE_BACKUP_DANCER,     REANIM_BACKUP_DANCER,       1,      18,     1,      0,      _S("BACKUP_DANCER")},
     { ZOMBIE_DUCKY_TUBE,        REANIM_ZOMBIE,              1,      21,     5,      0,      _S("DUCKY_TUBE_ZOMBIE")},
@@ -175,29 +175,29 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
     switch (theType)
     {
     case ZombieType::ZOMBIE_NORMAL:  
-        LoadPlainZombieReanim();
+        break;
+    case ZombieType::ZOMBIE_TRAFFIC_CONE:
+        mHelmType = HelmType::HELMTYPE_TRAFFIC_CONE;
+        mHelmHealth = 370;
+        break;
+    case ZombieType::ZOMBIE_FLAG:
+    {
+        mHasObject = true;
+        mPosX = WIDE_BOARD_WIDTH;
+        break;
+    }
+    case ZombieType::ZOMBIE_PAIL:
+        mHelmType = HelmType::HELMTYPE_PAIL;
+        mHelmHealth = 1100;
+        break;
+    case ZombieType::ZOMBIE_FOOTBALL:
+        mHelmType = HelmType::HELMTYPE_FOOTBALL;
+        mHelmHealth = 1400;
         break;
 
     case ZombieType::ZOMBIE_DUCKY_TUBE:  
         LoadPlainZombieReanim();
         break;
-
-    case ZombieType::ZOMBIE_TRAFFIC_CONE:  
-        LoadPlainZombieReanim();
-        ReanimShowPrefix("anim_cone", RENDER_GROUP_NORMAL);
-        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
-        mHelmType = HelmType::HELMTYPE_TRAFFIC_CONE;
-        mHelmHealth = 370;
-        break;
-
-    case ZombieType::ZOMBIE_PAIL:  
-        LoadPlainZombieReanim();
-        ReanimShowPrefix("anim_bucket", RENDER_GROUP_NORMAL);
-        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
-        mHelmType = HelmType::HELMTYPE_PAIL;
-        mHelmHealth = 1100;
-        break;
-
     case ZombieType::ZOMBIE_DOOR:  
         mShieldType = ShieldType::SHIELDTYPE_DOOR;
         mShieldHealth = 1100;
@@ -264,15 +264,6 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mVariant = false;
         break;
     }
-    
-    case ZombieType::ZOMBIE_FOOTBALL:  
-        mZombieRect = Rect(50, 0, 57, 115);
-        ReanimShowPrefix("anim_hair", RENDER_GROUP_HIDDEN);
-        mHelmType = HelmType::HELMTYPE_FOOTBALL;
-        mHelmHealth = 1400;
-        mAnimTicksPerFrame = 6;
-        mVariant = false;
-        break;
 
     case ZombieType::ZOMBIE_DIGGER:  
     {
@@ -504,24 +495,6 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
 
         break;
     }
-
-    case ZombieType::ZOMBIE_FLAG:  
-    {
-        mHasObject = true;
-        LoadPlainZombieReanim();
-
-        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
-        Reanimation* aFlagReanim = mApp->AddReanimation(0.0f, 0.0f, 0, ReanimationType::REANIM_FLAG);
-        aFlagReanim->PlayReanim("Zombie_flag", ReanimLoopType::REANIM_LOOP, 0, 15.0f);
-        mSpecialHeadReanimID = mApp->ReanimationGetID(aFlagReanim);
-        ReanimatorTrackInstance* aTrackInstance = aBodyReanim->GetTrackInstanceByName("Zombie_flaghand");
-        AttachReanim(aTrackInstance->mAttachmentID, aFlagReanim, 0.0f, 0.0f);
-        aBodyReanim->mFrameBasePose = 0;
-
-        mPosX = WIDE_BOARD_WIDTH;
-        break;
-    }
-
     case ZombieType::ZOMBIE_POGO:  
         mVariant = false;
         mZombiePhase = ZombiePhase::PHASE_POGO_BOUNCING;
@@ -3197,7 +3170,7 @@ void Zombie::OverrideParticleScale(TodParticleSystem* aParticle)
 {
     if (aParticle)
     {
-        aParticle->OverrideScale(nullptr, mScaleZombie);
+        aParticle->OverrideScale(nullptr, mScaleZombie * 1.2f);
     }
 }
 
@@ -3340,10 +3313,6 @@ void Zombie::DropHead(unsigned int theDamageFlags)
     else if (mZombieType == ZombieType::ZOMBIE_POLEVAULTER)
     {
         DropPole();
-    }
-    else if (mZombieType == ZombieType::ZOMBIE_FLAG)
-    {
-        DropFlag();
     }
 
     TodParticleSystem* aParticle = mApp->AddTodParticle(aPosX, aPosY, aRenderOrder, aEffect);
@@ -4470,6 +4439,8 @@ bool Zombie::HasYuckyFaceImage()
 
 void Zombie::ShowYuckyFace(bool theShow)
 {
+    if (mBodyReanimID == REANIMATIONID_NULL)
+        return;
     Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
     if (aBodyReanim == nullptr)
         return;
@@ -4729,41 +4700,44 @@ void Zombie::Animate()
         }
         mFrame = mAnimCounter / aFrameLength;
 
-        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
-        if (aBodyReanim)
+        if (mBodyReanimID != REANIMATIONID_NULL)
         {
-            float aLeftHandTime = 0.14f;
-            float aRightHandTime = 0.68f;
-            if (mZombieType == ZombieType::ZOMBIE_POLEVAULTER)
+            Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
+            if (aBodyReanim)
             {
-                aLeftHandTime = 0.38f;
-                aRightHandTime = 0.8f;
-            }
-            else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_LADDER)
-            {
-                aLeftHandTime = 0.42f;
-                aRightHandTime = 0.42f;
-            }
-            else if (mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX)
-            {
-                aLeftHandTime = 0.53f;
-                aRightHandTime = 0.53f;
-            }
-            else if (mZombieType == ZombieType::ZOMBIE_BOBSLED)
-            {
-                aLeftHandTime = 0.33f;
-                aRightHandTime = 0.83f;
-            }
-            else if (mZombieType == ZombieType::ZOMBIE_IMP)
-            {
-                aLeftHandTime = 0.33f;
-                aRightHandTime = 0.79f;
-            }
+                float aLeftHandTime = 0.14f;
+                float aRightHandTime = 0.68f;
+                if (mZombieType == ZombieType::ZOMBIE_POLEVAULTER)
+                {
+                    aLeftHandTime = 0.38f;
+                    aRightHandTime = 0.8f;
+                }
+                else if (mZombieType == ZombieType::ZOMBIE_NEWSPAPER || mZombieType == ZombieType::ZOMBIE_LADDER)
+                {
+                    aLeftHandTime = 0.42f;
+                    aRightHandTime = 0.42f;
+                }
+                else if (mZombieType == ZombieType::ZOMBIE_JACK_IN_THE_BOX)
+                {
+                    aLeftHandTime = 0.53f;
+                    aRightHandTime = 0.53f;
+                }
+                else if (mZombieType == ZombieType::ZOMBIE_BOBSLED)
+                {
+                    aLeftHandTime = 0.33f;
+                    aRightHandTime = 0.83f;
+                }
+                else if (mZombieType == ZombieType::ZOMBIE_IMP)
+                {
+                    aLeftHandTime = 0.33f;
+                    aRightHandTime = 0.79f;
+                }
 
-            if (aBodyReanim->ShouldTriggerTimedEvent(aLeftHandTime) || aBodyReanim->ShouldTriggerTimedEvent(aRightHandTime))
-            {
-                AnimateChewSound();
-                AnimateChewEffect();
+                if (aBodyReanim->ShouldTriggerTimedEvent(aLeftHandTime) || aBodyReanim->ShouldTriggerTimedEvent(aRightHandTime))
+                {
+                    AnimateChewSound();
+                    AnimateChewEffect();
+                }
             }
         }
         else
@@ -4797,11 +4771,7 @@ void Zombie::DrawZombie(Graphics* g, const ZombieDrawPosition& theDrawPos)
     case ZombieType::ZOMBIE_FLAG:
     case ZombieType::ZOMBIE_TRAFFIC_CONE:
     case ZombieType::ZOMBIE_PAIL:
-    case ZombieType::ZOMBIE_NEWSPAPER:
-    case ZombieType::ZOMBIE_DOOR:
     case ZombieType::ZOMBIE_FOOTBALL:
-    case ZombieType::ZOMBIE_DOLPHIN_RIDER:
-    case ZombieType::ZOMBIE_LADDER:
     //case ZombieType::ZOMBIE_DOG_WALKER:
         DrawZombieWithParts(g, theDrawPos);
         break;
@@ -4976,11 +4946,20 @@ void Zombie::DrawZombiePart(Graphics* g, Image* theImage, int theFrame, int theR
 
 void Zombie::DrawZombieHead(Graphics* g, const ZombieDrawPosition& theDrawPos, int theFrame)
 {
+    int aHelmIndex = GetHelmIndex(mZombieType);
+    int aHelmOffsetX = -50;
+    int aHelmOffsetY = -2;
 
-    /*
     if (mYuckyFace)
     {
         DrawZombiePart(g, IMAGE_ZOMBIE, mFrame, ZombieParts::PART_HEAD_YUCKY, theDrawPos);
+        if (mHelmHealth != 0)
+        {
+            ZombieDrawPosition theHelmetPos = theDrawPos;
+            theHelmetPos.mImageOffsetX = theHelmetPos.mHeadX + aHelmOffsetX;
+            theHelmetPos.mImageOffsetY = theHelmetPos.mHeadY + aHelmOffsetY;
+            DrawZombiePart(g, IMAGE_ZOMBIE, aHelmIndex, ZombieParts::PART_HELMET, theHelmetPos);
+        }
         return;
     }
 
@@ -4991,6 +4970,13 @@ void Zombie::DrawZombieHead(Graphics* g, const ZombieDrawPosition& theDrawPos, i
         if (mHelmHealth == 0)
         {
             DrawZombiePart(g, IMAGE_ZOMBIE, 5, ZombieParts::PART_HAIR, theDrawPos);
+        }
+        else
+        {
+            ZombieDrawPosition theHelmetPos = theDrawPos;
+            theHelmetPos.mImageOffsetX = theHelmetPos.mHeadX + aHelmOffsetX;
+            theHelmetPos.mImageOffsetY = theHelmetPos.mHeadY + aHelmOffsetY;
+            DrawZombiePart(g, IMAGE_ZOMBIE, aHelmIndex, ZombieParts::PART_HELMET, theHelmetPos);
         }
     }
     else
@@ -5006,25 +4992,30 @@ void Zombie::DrawZombieHead(Graphics* g, const ZombieDrawPosition& theDrawPos, i
         {
             DrawZombiePart(g, IMAGE_ZOMBIE, theFrame, ZombieParts::PART_HAIR, theDrawPos);
         }
+        else
+        {
+            ZombieDrawPosition theHelmetPos = theDrawPos;
+            theHelmetPos.mImageOffsetX = theHelmetPos.mHeadX + aHelmOffsetX;
+            theHelmetPos.mImageOffsetY = theHelmetPos.mHeadY + aHelmOffsetY;
+            DrawZombiePart(g, IMAGE_ZOMBIE, aHelmIndex, ZombieParts::PART_HELMET, theHelmetPos);
+        }
     }
-    */
+    
 }
 
 void Zombie::DrawZombieWithParts(Graphics* g, const ZombieDrawPosition& theDrawPos)
 {
 
-    /*
+    
     int aFrame = mIsEating ? 0 : mFrame;
-    DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PARTS_BODY, theDrawPos);
+    DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_BODY, theDrawPos);
 
     if (mHasArm && mBodyReanimID == ReanimationID::REANIMATIONID_NULL)
     {
-        if (mZombiePhase == ZombiePhase::PHASE_WALKING_DOG && mHasHead)
+        if (mZombieType == ZombieType::ZOMBIE_FLAG && mHasArm)
         {
             ZombieDrawPosition theDrawPosLeash = theDrawPos;
-            theDrawPosLeash.mImageOffsetX -= 14.0f;
-            theDrawPosLeash.mImageOffsetY += 10.0f;
-            DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_ARM_LEASH, theDrawPosLeash);
+            DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_ARM_FLAG, theDrawPosLeash);
         }
         else
         {
@@ -5036,7 +5027,7 @@ void Zombie::DrawZombieWithParts(Graphics* g, const ZombieDrawPosition& theDrawP
     {
         DrawZombieHead(g, theDrawPos, aFrame);
     }
-    */
+    
 }
 
 void Zombie::UpdateReanim()
@@ -5721,9 +5712,6 @@ void Zombie::GetDrawPos(ZombieDrawPosition& theDrawPos)
 
     switch (mZombieType)
     {
-    case ZombieType::ZOMBIE_FOOTBALL:
-        theDrawPos.mImageOffsetY -= 16.0f;
-        break;
     case ZombieType::ZOMBIE_YETI:
         theDrawPos.mImageOffsetY -= 20.0f;
         break;
@@ -10434,4 +10422,28 @@ void Zombie::SetupWaterTrack(const char* theTrackName)
     aTrackInstance->mIgnoreExtraAdditiveColor = true;
     aTrackInstance->mIgnoreColorOverride = true;
     aTrackInstance->mIgnoreClipRect = true;
+}
+
+
+int Zombie::GetHelmIndex(ZombieType theZombieType)
+{
+    int aIndex = 0;
+    switch (theZombieType)
+    {
+    case ZOMBIE_TRAFFIC_CONE:
+        aIndex = 0;
+        break;
+    case ZOMBIE_PAIL:
+        aIndex = 1;
+        break;
+    case ZOMBIE_FOOTBALL:
+        aIndex = 2;
+        break;
+    case ZOMBIE_DIGGER:
+        aIndex = 3;
+        break;
+    default:
+        break;
+    }
+    return aIndex;
 }

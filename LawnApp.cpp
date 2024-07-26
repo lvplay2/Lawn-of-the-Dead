@@ -128,10 +128,10 @@ LawnApp::LawnApp()
 	mAutoStartLoadingThread = false;
 	mDebugKeysEnabled = false;
 	isFastMode = false;
-	mProdName = "PlantsVsZombies";
+	mProdName = "LawnOfTheDead";
 	mVersion = "v2.0";
 	mReconVersion = "PvZ: QoTL " + mVersion;
-	std::string aTitleName = "Plants vs. Zombies: QoTL";
+	std::string aTitleName = "Lawn Of The Dead";
 	aTitleName += " " + mVersion;
 #ifdef _DEBUG
 	aTitleName += " DEBUG";
@@ -1912,9 +1912,9 @@ void LawnApp::LoadingThreadProc()
 		mTitleScreen->mLoaderScreenIsLoaded = true;
 	}
 
-	const char* groups[] = { "LoadingFonts", "LoadingImages", "LoadingSounds" };
+	const char* groups[] = { "LoadingFonts", "LoadingImages", "LoadingSounds" , "LoadingLawnOfTheDead" };
 	int group_ave_ms_to_load[] = { 54, 9, 54 };
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		mNumLoadingThreadTasks += mResourceManager->GetNumResources(groups[i]) * group_ave_ms_to_load[i];
 	}
@@ -1930,6 +1930,7 @@ void LawnApp::LoadingThreadProc()
 	TodHesitationTrace("loading thread start");
 
 	LoadGroup("LoadingImages", 9);
+	LoadGroup("LoadingLawnOfTheDead", 4);
 	LoadGroup("LoadingFonts", 54);
 	if (mLoadingFailed || mShutdown || mCloseRequest)
 		return;

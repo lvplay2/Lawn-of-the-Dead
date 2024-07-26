@@ -1835,21 +1835,31 @@ void Plant::MagnetShroomAttactItem(Zombie* theZombie)
     mApp->PlayFoley(FoleyType::FOLEY_MAGNETSHROOM);
 
     MagnetItem* aMagnetItem = GetFreeMagnetItem();
-    if (theZombie->mHelmType == HelmType::HELMTYPE_PAIL)
+    if (theZombie->mHelmType == HelmType::HELMTYPE_TRAFFIC_CONE)
     {
-        int aDamageIndex = theZombie->GetHelmDamageIndex();
-
         theZombie->mHelmHealth = 0;
         theZombie->mHelmType = HelmType::HELMTYPE_NONE;
-        theZombie->GetTrackPosition("anim_bucket", aMagnetItem->mPosX, aMagnetItem->mPosY);
-        theZombie->ReanimShowPrefix("anim_bucket", RENDER_GROUP_HIDDEN);
-        theZombie->ReanimShowPrefix("anim_hair", RENDER_GROUP_NORMAL);
 
-        aMagnetItem->mPosX -= IMAGE_REANIM_ZOMBIE_BUCKET1->GetWidth() / 2;
-        aMagnetItem->mPosY -= IMAGE_REANIM_ZOMBIE_BUCKET1->GetHeight() / 2;
+        aMagnetItem->mPosX = theZombie->mPosX;
+        aMagnetItem->mPosY = theZombie->mPosY;
+        aMagnetItem->mPosX -= IMAGE_METAL_HELMET->GetWidth() / 2;
+        aMagnetItem->mPosY -= IMAGE_METAL_HELMET->GetHeight() / 2;
         aMagnetItem->mDestOffsetX = RandRangeFloat(-10.0f, 10.0f) + 25.0f;
         aMagnetItem->mDestOffsetY = RandRangeFloat(-10.0f, 10.0f) + 20.0f;
-        aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_PAIL_1 + aDamageIndex);
+        aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_CONE);
+    }
+    else if (theZombie->mHelmType == HelmType::HELMTYPE_PAIL)
+    {
+        theZombie->mHelmHealth = 0;
+        theZombie->mHelmType = HelmType::HELMTYPE_NONE;
+
+        aMagnetItem->mPosX = theZombie->mPosX;
+        aMagnetItem->mPosY = theZombie->mPosY;
+        aMagnetItem->mPosX -= IMAGE_GOLD_HELMET->GetWidth() / 2;
+        aMagnetItem->mPosY -= IMAGE_GOLD_HELMET->GetHeight() / 2;
+        aMagnetItem->mDestOffsetX = RandRangeFloat(-10.0f, 10.0f) + 25.0f;
+        aMagnetItem->mDestOffsetY = RandRangeFloat(-10.0f, 10.0f) + 20.0f;
+        aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_PAIL);
     }
     else if (theZombie->mHelmType == HelmType::HELMTYPE_FOOTBALL)
     {
@@ -1857,15 +1867,14 @@ void Plant::MagnetShroomAttactItem(Zombie* theZombie)
 
         theZombie->mHelmHealth = 0;
         theZombie->mHelmType = HelmType::HELMTYPE_NONE;
-        theZombie->GetTrackPosition("zombie_football_helmet", aMagnetItem->mPosX, aMagnetItem->mPosY);
-        theZombie->ReanimShowPrefix("zombie_football_helmet", RENDER_GROUP_HIDDEN);
-        theZombie->ReanimShowPrefix("anim_hair", RENDER_GROUP_NORMAL);
 
+        aMagnetItem->mPosX = theZombie->mPosX;
+        aMagnetItem->mPosY = theZombie->mPosY;
         aMagnetItem->mPosX += 37.0f;
         aMagnetItem->mPosY -= 60.0f;
         aMagnetItem->mDestOffsetX = RandRangeFloat(-10.0f, 10.0f) + 20.0f;
         aMagnetItem->mDestOffsetY = RandRangeFloat(-10.0f, 10.0f) + 20.0f;
-        aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_FOOTBALL_HELMET_1 + aDamageIndex);
+        aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_FOOTBALL_HELMET);
     }
     else if (theZombie->mShieldType == ShieldType::SHIELDTYPE_DOOR)
     {
@@ -1880,11 +1889,13 @@ void Plant::MagnetShroomAttactItem(Zombie* theZombie)
         }
         theZombie->GetTrackPosition("anim_screendoor", aMagnetItem->mPosX, aMagnetItem->mPosY);
 
-        aMagnetItem->mPosX -= IMAGE_REANIM_ZOMBIE_SCREENDOOR1->GetWidth() / 2;
-        aMagnetItem->mPosY -= IMAGE_REANIM_ZOMBIE_SCREENDOOR1->GetHeight() / 2;
+        aMagnetItem->mPosX = theZombie->mPosX;
+        aMagnetItem->mPosY = theZombie->mPosY;
+        aMagnetItem->mPosX -= IMAGE_GOLD_SHIELD->GetWidth() / 2;
+        aMagnetItem->mPosY -= IMAGE_GOLD_SHIELD->GetHeight() / 2;
         aMagnetItem->mDestOffsetX = RandRangeFloat(-10.0f, 10.0f) + 30.0f;
         aMagnetItem->mDestOffsetY = RandRangeFloat(-10.0f, 10.0f);
-        aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_DOOR_1 + aDamageIndex);
+        aMagnetItem->mItemType = (MagnetItemType)((int)MagnetItemType::MAGNET_ITEM_DOOR + aDamageIndex);
     }
     else if (theZombie->mShieldType == ShieldType::SHIELDTYPE_LADDER)
     {
@@ -1911,7 +1922,7 @@ void Plant::MagnetShroomAttactItem(Zombie* theZombie)
         aMagnetItem->mPosY += 84.0f - IMAGE_REANIM_ZOMBIE_LADDER_5->GetHeight() / 2;
         aMagnetItem->mDestOffsetX = RandRangeFloat(-10.0f, 10.0f) + 30.0f;
         aMagnetItem->mDestOffsetY = RandRangeFloat(-10.0f, 10.0f);
-        aMagnetItem->mItemType = theZombie->mHasArm ? MagnetItemType::MAGNET_ITEM_POGO_1 : MagnetItemType::MAGNET_ITEM_POGO_3;
+        aMagnetItem->mItemType = theZombie->mHasArm ? MagnetItemType::MAGNET_ITEM_POGO : MagnetItemType::MAGNET_ITEM_POGO;
     }
     else if (theZombie->mZombiePhase == ZombiePhase::PHASE_JACK_IN_THE_BOX_RUNNING)
     {
@@ -2059,6 +2070,7 @@ void Plant::UpdateMagnetShroom()
             }
             else if (!(aZombie->mHelmType == HelmType::HELMTYPE_PAIL ||
                 aZombie->mHelmType == HelmType::HELMTYPE_FOOTBALL ||
+                aZombie->mHelmType == HelmType::HELMTYPE_TRAFFIC_CONE ||
                 aZombie->mShieldType == ShieldType::SHIELDTYPE_DOOR ||
                 aZombie->mShieldType == ShieldType::SHIELDTYPE_LADDER ||
                 aZombie->mZombiePhase == ZombiePhase::PHASE_JACK_IN_THE_BOX_RUNNING))
@@ -2409,7 +2421,7 @@ void Plant::UpdateBowling()
             }
             else if (aZombie->mHelmType == HelmType::HELMTYPE_TRAFFIC_CONE)
             {
-                mApp->PlayFoley(FoleyType::FOLEY_PLASTIC_HIT);
+                mApp->PlayFoley(FoleyType::FOLEY_SHIELD_HIT);
             }
             
             aZombie->TakeHelmDamage(900, 0U);
@@ -3673,46 +3685,25 @@ void Plant::DrawMagnetItems(Graphics* g)
             Image* aImage = nullptr;
             float aScale = 0.8f;
 
-            if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_PAIL_1)
+            if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_CONE)
             {
-                aImage = IMAGE_REANIM_ZOMBIE_BUCKET1;
+                aImage = IMAGE_METAL_HELMET;
             }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_PAIL_2)
+            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_PAIL)
             {
-                aImage = IMAGE_REANIM_ZOMBIE_BUCKET2;
+                aImage = IMAGE_GOLD_HELMET;
             }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_PAIL_3)
+            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_FOOTBALL_HELMET)
             {
-                aImage = IMAGE_REANIM_ZOMBIE_BUCKET3;
+                aImage = IMAGE_BLACK_HELMET;
             }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_FOOTBALL_HELMET_1)
+            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_DOOR)
             {
-                aImage = IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET;
+                aImage = IMAGE_GOLD_SHIELD;
             }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_FOOTBALL_HELMET_2)
+            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_POGO)
             {
-                aImage = IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET2;
-            }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_FOOTBALL_HELMET_3)
-            {
-                aImage = IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET3;
-            }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_DOOR_1)
-            {
-                aImage = IMAGE_REANIM_ZOMBIE_SCREENDOOR1;
-            }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_DOOR_2)
-            {
-                aImage = IMAGE_REANIM_ZOMBIE_SCREENDOOR2;
-            }
-            else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_DOOR_3)
-            {
-                aImage = IMAGE_REANIM_ZOMBIE_SCREENDOOR3;
-            }
-            else if (aMagnetItem->mItemType >= MagnetItemType::MAGNET_ITEM_POGO_1 && aMagnetItem->mItemType <= MagnetItemType::MAGNET_ITEM_POGO_3)
-            {
-                aCelCol = (int)aMagnetItem->mItemType - (int)MagnetItemType::MAGNET_ITEM_POGO_1;
-                aImage = IMAGE_ZOMBIEPOGO;
+                aImage = IMAGE_POGO;
             }
             else if (aMagnetItem->mItemType == MagnetItemType::MAGNET_ITEM_LADDER_1)
             {

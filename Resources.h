@@ -605,6 +605,21 @@ namespace Sexy
 	extern Image* IMAGE_ZOMBIE_SEAWEED;
 	extern Image* IMAGE_ZOMBOSS_PARTICLES;
 
+	// LoadingLawnOfTheDead Resources
+	bool ExtractLoadingLawnOfTheDeadResources(ResourceManager *theMgr);
+	extern Image* IMAGE_ARM_FLAG;
+	extern Image* IMAGE_BLACK_HELMET;
+	extern Image* IMAGE_GOLD_HELMET;
+	extern Image* IMAGE_GOLD_SHIELD;
+	extern Image* IMAGE_METAL_HELMET;
+	extern Image* IMAGE_PICKAXE;
+	extern Image* IMAGE_POGO;
+	extern Image* IMAGE_PROJECTILES;
+	extern Image* IMAGE_PROPELLER;
+	extern Image* IMAGE_ZOMBIE;
+	extern Image* IMAGE_ZOMBIE_DOG;
+	extern Image* IMAGE_ZOMBIE_PROPELLER;
+
 	// LoadingSounds Resources
 	bool ExtractLoadingSoundsResources(ResourceManager *theMgr);
 	extern int SOUND_ACHIEVEMENT;
@@ -805,6 +820,18 @@ namespace Sexy
 		FONT_DWARVENTODCRAFT36GREENINSET_ID,
 		FONT_PICO129_ID,
 		FONT_BRIANNETOD12_ID,
+		IMAGE_ZOMBIE_ID,
+		IMAGE_ZOMBIE_DOG_ID,
+		IMAGE_ZOMBIE_PROPELLER_ID,
+		IMAGE_PROJECTILES_ID,
+		IMAGE_METAL_HELMET_ID,
+		IMAGE_GOLD_HELMET_ID,
+		IMAGE_BLACK_HELMET_ID,
+		IMAGE_GOLD_SHIELD_ID,
+		IMAGE_PROPELLER_ID,
+		IMAGE_PICKAXE_ID,
+		IMAGE_POGO_ID,
+		IMAGE_ARM_FLAG_ID,
 		IMAGE_MOUSE_CURSOR_ID,
 		IMAGE_EDITBOX_ID,
 		IMAGE_DIALOG_TOPLEFT_ID,

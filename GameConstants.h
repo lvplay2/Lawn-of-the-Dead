@@ -58,8 +58,8 @@ const int           STORESCREEN_PAGESTRING_Y = 500;
 ///						QOTL VARIABLES					 ///
 ////////////////////////////////////////////////////////////
 
-const bool			HAS_QUICKPLAY = true;
-const bool			HAS_ACHIEVEMENTS = true;
-const bool			HAS_PAGE_SELECTOR = true;
-const bool			HAS_FAST_FOWARD_BUTTON = true;
-const bool			HAS_CUSTOM_CURSOR = false;
+const bool			HAS_QUICKPLAY = false;
+const bool			HAS_ACHIEVEMENTS = false;
+const bool			HAS_PAGE_SELECTOR = false;
+const bool			HAS_FAST_FOWARD_BUTTON = false;
+const bool			HAS_CUSTOM_CURSOR = true;

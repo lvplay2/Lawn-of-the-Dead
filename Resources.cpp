@@ -39,6 +39,7 @@ bool Sexy::ExtractResourcesByName(ResourceManager *theManager, const char *theNa
 	if (strcmp(theName,"LoaderBar")==0) return ExtractLoaderBarResources(theManager);
 	if (strcmp(theName,"LoadingFonts")==0) return ExtractLoadingFontsResources(theManager);
 	if (strcmp(theName,"LoadingImages")==0) return ExtractLoadingImagesResources(theManager);
+	if (strcmp(theName,"LoadingLawnOfTheDead")==0) return ExtractLoadingLawnOfTheDeadResources(theManager);
 	if (strcmp(theName,"LoadingSounds")==0) return ExtractLoadingSoundsResources(theManager);
 	return false;
 }
@@ -1578,6 +1579,47 @@ bool Sexy::ExtractLoadingImagesResources(ResourceManager *theManager)
 	return true;
 }
 
+// LoadingLawnOfTheDead Resources
+Image* Sexy::IMAGE_ARM_FLAG;
+Image* Sexy::IMAGE_BLACK_HELMET;
+Image* Sexy::IMAGE_GOLD_HELMET;
+Image* Sexy::IMAGE_GOLD_SHIELD;
+Image* Sexy::IMAGE_METAL_HELMET;
+Image* Sexy::IMAGE_PICKAXE;
+Image* Sexy::IMAGE_POGO;
+Image* Sexy::IMAGE_PROJECTILES;
+Image* Sexy::IMAGE_PROPELLER;
+Image* Sexy::IMAGE_ZOMBIE;
+Image* Sexy::IMAGE_ZOMBIE_DOG;
+Image* Sexy::IMAGE_ZOMBIE_PROPELLER;
+
+bool Sexy::ExtractLoadingLawnOfTheDeadResources(ResourceManager *theManager)
+{
+	gNeedRecalcVariableToIdMap = true;
+
+	ResourceManager &aMgr = *theManager;
+	try
+	{
+		IMAGE_ARM_FLAG = aMgr.GetImageThrow("IMAGE_ARM_FLAG");
+		IMAGE_BLACK_HELMET = aMgr.GetImageThrow("IMAGE_BLACK_HELMET");
+		IMAGE_GOLD_HELMET = aMgr.GetImageThrow("IMAGE_GOLD_HELMET");
+		IMAGE_GOLD_SHIELD = aMgr.GetImageThrow("IMAGE_GOLD_SHIELD");
+		IMAGE_METAL_HELMET = aMgr.GetImageThrow("IMAGE_METAL_HELMET");
+		IMAGE_PICKAXE = aMgr.GetImageThrow("IMAGE_PICKAXE");
+		IMAGE_POGO = aMgr.GetImageThrow("IMAGE_POGO");
+		IMAGE_PROJECTILES = aMgr.GetImageThrow("IMAGE_PROJECTILES");
+		IMAGE_PROPELLER = aMgr.GetImageThrow("IMAGE_PROPELLER");
+		IMAGE_ZOMBIE = aMgr.GetImageThrow("IMAGE_ZOMBIE");
+		IMAGE_ZOMBIE_DOG = aMgr.GetImageThrow("IMAGE_ZOMBIE_DOG");
+		IMAGE_ZOMBIE_PROPELLER = aMgr.GetImageThrow("IMAGE_ZOMBIE_PROPELLER");
+	}
+	catch(ResourceManagerException&)
+	{
+		return false;
+	}
+	return true;
+}
+
 // LoadingSounds Resources
 int Sexy::SOUND_ACHIEVEMENT;
 int Sexy::SOUND_AWOOGA;
@@ -1957,6 +1999,18 @@ static void* gResources[] =
 	&FONT_DWARVENTODCRAFT36GREENINSET,
 	&FONT_PICO129,
 	&FONT_BRIANNETOD12,
+	&IMAGE_ZOMBIE,
+	&IMAGE_ZOMBIE_DOG,
+	&IMAGE_ZOMBIE_PROPELLER,
+	&IMAGE_PROJECTILES,
+	&IMAGE_METAL_HELMET,
+	&IMAGE_GOLD_HELMET,
+	&IMAGE_BLACK_HELMET,
+	&IMAGE_GOLD_SHIELD,
+	&IMAGE_PROPELLER,
+	&IMAGE_PICKAXE,
+	&IMAGE_POGO,
+	&IMAGE_ARM_FLAG,
 	&IMAGE_MOUSE_CURSOR,
 	&IMAGE_EDITBOX,
 	&IMAGE_DIALOG_TOPLEFT,
@@ -2708,6 +2762,18 @@ const char* Sexy::GetStringIdById(int theId)
 		case FONT_DWARVENTODCRAFT36GREENINSET_ID: return "FONT_DWARVENTODCRAFT36GREENINSET";
 		case FONT_PICO129_ID: return "FONT_PICO129";
 		case FONT_BRIANNETOD12_ID: return "FONT_BRIANNETOD12";
+		case IMAGE_ZOMBIE_ID: return "IMAGE_ZOMBIE";
+		case IMAGE_ZOMBIE_DOG_ID: return "IMAGE_ZOMBIE_DOG";
+		case IMAGE_ZOMBIE_PROPELLER_ID: return "IMAGE_ZOMBIE_PROPELLER";
+		case IMAGE_PROJECTILES_ID: return "IMAGE_PROJECTILES";
+		case IMAGE_METAL_HELMET_ID: return "IMAGE_METAL_HELMET";
+		case IMAGE_GOLD_HELMET_ID: return "IMAGE_GOLD_HELMET";
+		case IMAGE_BLACK_HELMET_ID: return "IMAGE_BLACK_HELMET";
+		case IMAGE_GOLD_SHIELD_ID: return "IMAGE_GOLD_SHIELD";
+		case IMAGE_PROPELLER_ID: return "IMAGE_PROPELLER";
+		case IMAGE_PICKAXE_ID: return "IMAGE_PICKAXE";
+		case IMAGE_POGO_ID: return "IMAGE_POGO";
+		case IMAGE_ARM_FLAG_ID: return "IMAGE_ARM_FLAG";
 		case IMAGE_MOUSE_CURSOR_ID: return "IMAGE_MOUSE_CURSOR";
 		case IMAGE_EDITBOX_ID: return "IMAGE_EDITBOX";
 		case IMAGE_DIALOG_TOPLEFT_ID: return "IMAGE_DIALOG_TOPLEFT";

@@ -251,9 +251,36 @@ MemoryImage* ReanimatorCache::MakeCachedZombieFrame(ZombieType theZombieType)
 		aUseZombieType = ZombieType::ZOMBIE_POLEVAULTER;
 	}
 	ZombieDefinition& aZombieDef = GetZombieDefinition(aUseZombieType);
-	TOD_ASSERT(aZombieDef.mReanimationType != ReanimationType::REANIM_NONE);
 
 	float aPosX = 40.0f, aPosY = 40.0f;
+	//TOD_ASSERT(aZombieDef.mReanimationType != ReanimationType::REANIM_NONE);
+	if (aZombieDef.mReanimationType == ReanimationType::REANIM_NONE)
+	{
+		for (int aFrame = 0; aFrame <= 5; aFrame++)
+		{
+			if (aFrame == 3 || aFrame == 2)
+				continue;
+			int aCelWidth = IMAGE_ZOMBIE->GetCelWidth();
+			int aCelHeight = IMAGE_ZOMBIE->GetCelHeight();
+			float anOffsetX = 10;
+			float anOffsetY = 40;
+
+			float aDrawHeight = aCelHeight;
+
+			bool aMirror = false;
+
+			if (aMirror)
+			{
+				anOffsetX = -anOffsetX;
+			}
+
+			Rect aSrcRect(0 * aCelWidth, aFrame * aCelHeight, aCelWidth, aDrawHeight);
+			Rect aDestRect(anOffsetX, anOffsetY, aCelWidth, aDrawHeight);
+			aMemoryGraphics.DrawImageMirror(IMAGE_ZOMBIE, aDestRect, aSrcRect, aMirror);
+		}
+		return aMemoryImage;
+
+	}
 	if (aZombieDef.mReanimationType == ReanimationType::REANIM_ZOMBIE)
 	{
 		Reanimation aReanim;
