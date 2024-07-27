@@ -35,7 +35,7 @@ ZombieDefinition gZombieDefs[NUM_ZOMBIE_TYPES] = {
     { ZOMBIE_DOLPHIN_RIDER,     REANIM_ZOMBIE_DOLPHINRIDER, 3,      28,     10,     1500,   _S("DOLPHIN_RIDER_ZOMBIE")},
     { ZOMBIE_JACK_IN_THE_BOX,   REANIM_JACKINTHEBOX,        3,      31,     10,     1000,   _S("JACK_IN_THE_BOX_ZOMBIE")},
     { ZOMBIE_BALLOON,           REANIM_BALLOON,             2,      33,     10,     2000,   _S("BALLOON_ZOMBIE")},
-    { ZOMBIE_DIGGER,            REANIM_DIGGER,              4,      36,     10,     1000,   _S("DIGGER_ZOMBIE")},
+    { ZOMBIE_DIGGER,            REANIM_NONE,              4,      36,     10,     1000,   _S("DIGGER_ZOMBIE")},
     { ZOMBIE_POGO,              REANIM_POGO,                4,      38,     10,     1000,   _S("POGO_ZOMBIE")},
     { ZOMBIE_YETI,              REANIM_YETI,                4,      40,     1,      1,      _S("ZOMBIE_YETI")},
     { ZOMBIE_BUNGEE,            REANIM_BUNGEE,              3,      41,     10,     1000,   _S("BUNGEE_ZOMBIE") },
@@ -194,6 +194,29 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mHelmType = HelmType::HELMTYPE_FOOTBALL;
         mHelmHealth = 1400;
         break;
+    case ZombieType::ZOMBIE_DIGGER:
+    {
+        mHelmType = HelmType::HELMTYPE_DIGGER;
+        mHelmHealth = 100;
+        mVariant = false;
+        mHasObject = true;
+        mZombieRect = Rect(50, 0, 28, 115);
+
+        if (!IsOnBoard())
+        {
+            mZombiePhase = ZombiePhase::PHASE_DIGGER_CUTSCENE;
+        }
+        else
+        {
+            mZombiePhase = ZombiePhase::PHASE_DIGGER_TUNNELING;
+            aRenderOffset = 7;
+            PickRandomSpeed();
+        }
+
+        break;
+    }
+
+
 
     case ZombieType::ZOMBIE_DUCKY_TUBE:  
         LoadPlainZombieReanim();
@@ -264,34 +287,6 @@ void Zombie::ZombieInitialize(int theRow, ZombieType theType, bool theVariant, Z
         mVariant = false;
         break;
     }
-
-    case ZombieType::ZOMBIE_DIGGER:  
-    {
-        mHelmType = HelmType::HELMTYPE_DIGGER;
-        mHelmHealth = 100;
-        mVariant = false;
-        mHasObject = true;
-        mZombieRect = Rect(50, 0, 28, 115);
-        
-        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
-        aBodyReanim->SetTruncateDisappearingFrames(nullptr, false);
-        
-        if (!IsOnBoard())
-        {
-            mZombiePhase = ZombiePhase::PHASE_DIGGER_CUTSCENE;
-        }
-        else
-        {
-            mZombiePhase = ZombiePhase::PHASE_DIGGER_TUNNELING;
-            AddAttachedParticle(60, 100, ParticleEffect::PARTICLE_DIGGER_TUNNEL);
-            aRenderOffset = 7;
-            PlayZombieReanim("anim_dig", ReanimLoopType::REANIM_LOOP_FULL_LAST_FRAME, 0, 12.0f);
-            PickRandomSpeed();
-        }
-
-        break;
-    }
-
     case ZombieType::ZOMBIE_POLEVAULTER:  
         mBodyHealth = 500;
         mAnimTicksPerFrame = 6;
@@ -2523,15 +2518,10 @@ void Zombie::DiggerLoseAxe()
     {
         mZombiePhase = ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE;
         mPhaseCounter = 200;
-        SetAnimRate(0.0f);
-        UpdateAnimSpeed();
-        AttachmentDetachCrossFadeParticleType(mAttachmentID, ParticleEffect::PARTICLE_DIGGER_TUNNEL, nullptr);
         StopZombieSound();
     }
 
     mHasObject = false;
-    ReanimShowTrack("Zombie_digger_pickaxe", RENDER_GROUP_HIDDEN);
-    ReanimShowTrack("Zombie_digger_dirt", RENDER_GROUP_HIDDEN);
 }
 
 void Zombie::UpdateZombieDigger()
@@ -2575,6 +2565,7 @@ void Zombie::UpdateZombieDigger()
         {
             mAltitude = 0.0f;
             mZombiePhase = ZombiePhase::PHASE_DIGGER_STUNNED;
+            mPhaseCounter = 40;
             PlayZombieReanim("anim_dizzy", ReanimLoopType::REANIM_LOOP, 10, 12.0f);
         }
     }
@@ -2623,8 +2614,7 @@ void Zombie::UpdateZombieDigger()
     }
     else if (mZombiePhase == ZombiePhase::PHASE_DIGGER_STUNNED)
     {
-        Reanimation* aBodyReanim = mApp->ReanimationGet(mBodyReanimID);
-        if (aBodyReanim->mLoopCount > 1)
+        if (mPhaseCounter == 0)
         {
             mZombiePhase = ZombiePhase::PHASE_DIGGER_WALKING;
             StartWalkAnim(20);
@@ -3352,10 +3342,6 @@ void Zombie::DropHead(unsigned int theDamageFlags)
         {
             aParticle->OverrideImage(nullptr, IMAGE_REANIM_ZOMBIE_SNORKLE_HEAD);
         }
-        else if (mZombieType == ZombieType::ZOMBIE_DIGGER)
-        {
-            aParticle->OverrideImage(nullptr, IMAGE_ZOMBIEDIGGERHEAD);
-        }
         else if (mZombieType == ZombieType::ZOMBIE_DOLPHIN_RIDER)
         {
             aParticle->OverrideImage(nullptr, IMAGE_ZOMBIEDOLPHINRIDERHEAD);
@@ -3488,10 +3474,6 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
             GetTrackPosition("Zombie_outerarm_lower", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_imp_outerarm_upper", IMAGE_REANIM_ZOMBIE_IMP_ARM1_BONE);
             break;
-        case ZombieType::ZOMBIE_DIGGER:
-            GetTrackPosition("Zombie_outerarm_lower", aPosX, aPosY);
-            aBodyReanim->SetImageOverride("Zombie_digger_outerarm_upper", IMAGE_REANIM_ZOMBIE_DIGGER_OUTERARM_UPPER2);
-            break;
         case ZombieType::ZOMBIE_BOBSLED:
             GetTrackPosition("Zombie_outerarm_lower", aPosX, aPosY);
             aBodyReanim->SetImageOverride("Zombie_dolphinrider_outerarm_upper", IMAGE_REANIM_ZOMBIE_BOBSLED_OUTERARM_UPPER2);
@@ -3589,9 +3571,6 @@ void Zombie::SetupReanimForLostArm(unsigned int theDamageFlags)
                 break;
             case ZombieType::ZOMBIE_JACK_IN_THE_BOX:
                 aParticle->OverrideImage(nullptr, IMAGE_ZOMBIEJACKBOXARM);
-                break;
-            case ZombieType::ZOMBIE_DIGGER:
-                aParticle->OverrideImage(nullptr, IMAGE_ZOMBIEDIGGERARM);
                 break;
             case ZombieType::ZOMBIE_POLEVAULTER:
             case ZombieType::ZOMBIE_BALLOON:
@@ -4772,6 +4751,7 @@ void Zombie::DrawZombie(Graphics* g, const ZombieDrawPosition& theDrawPos)
     case ZombieType::ZOMBIE_TRAFFIC_CONE:
     case ZombieType::ZOMBIE_PAIL:
     case ZombieType::ZOMBIE_FOOTBALL:
+    case ZombieType::ZOMBIE_DIGGER:
     //case ZombieType::ZOMBIE_DOG_WALKER:
         DrawZombieWithParts(g, theDrawPos);
         break;
@@ -4793,7 +4773,6 @@ void Zombie::DrawZombie(Graphics* g, const ZombieDrawPosition& theDrawPos)
     //case ZombieType::ZOMBIE_BOBSLED:
     //case ZombieType::ZOMBIE_JACK_IN_THE_BOX:
     //case ZombieType::ZOMBIE_BALLOON:
-    //case ZombieType::ZOMBIE_DIGGER:
     //case ZombieType::ZOMBIE_POGO:
     //case ZombieType::ZOMBIE_YETI:
     //case ZombieType::ZOMBIE_BUNGEE:
@@ -4884,6 +4863,10 @@ void Zombie::DrawZombiePart(Graphics* g, Image* theImage, int theFrame, int theR
             aMirror = true;
             anOffsetX -= 30.0f;
         }
+    }
+    else if (mZombiePhase == ZombiePhase::PHASE_DIGGER_WALKING)
+    {
+        aMirror = true;
     }
     if (aMirror)
     {
@@ -4981,7 +4964,12 @@ void Zombie::DrawZombieHead(Graphics* g, const ZombieDrawPosition& theDrawPos, i
     }
     else
     {
-        DrawZombiePart(g, IMAGE_ZOMBIE, mFrame, ZombieParts::PART_HEAD, theDrawPos);
+        if (mZombiePhase == ZombiePhase::PHASE_DIGGER_STUNNED)
+        {
+            DrawZombiePart(g, IMAGE_ZOMBIE, mFrame, ZombieParts::PART_HEAD_DIZZY, theDrawPos);
+        }
+        else
+            DrawZombiePart(g, IMAGE_ZOMBIE, mFrame, ZombieParts::PART_HEAD, theDrawPos);
 
         if (mVariant)
         {
@@ -5008,14 +4996,23 @@ void Zombie::DrawZombieWithParts(Graphics* g, const ZombieDrawPosition& theDrawP
 
     
     int aFrame = mIsEating ? 0 : mFrame;
-    DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_BODY, theDrawPos);
+    if (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING)
+    {
+        DrawZombiePart(g, IMAGE_ZOMBIE, aFrame % 2, ZombieParts::PART_DIGGER, theDrawPos);
+        return;
+    }
+    else
+        DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_BODY, theDrawPos);
 
     if (mHasArm && mBodyReanimID == ReanimationID::REANIMATIONID_NULL)
     {
         if (mZombieType == ZombieType::ZOMBIE_FLAG && mHasArm)
         {
-            ZombieDrawPosition theDrawPosLeash = theDrawPos;
-            DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_ARM_FLAG, theDrawPosLeash);
+            DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_ARM_FLAG, theDrawPos);
+        }
+        else if (mZombieType == ZombieType::ZOMBIE_DIGGER && mZombiePhase != ZombiePhase::PHASE_DIGGER_WALKING_WITHOUT_AXE && mHasArm)
+        {
+            DrawZombiePart(g, IMAGE_ZOMBIE, aFrame, ZombieParts::PART_ARM_PICKAXE, theDrawPos);
         }
         else
         {
@@ -7490,34 +7487,7 @@ int Zombie::TakeHelmDamage(int theDamage, unsigned int theDamageFlags)
     if (aDamageIndexBeforeDamage != aDamageIndexAfterDamage)
     {
         Reanimation* aBodyReanim = mApp->ReanimationTryToGet(mBodyReanimID);
-        if (mHelmType == HelmType::HELMTYPE_TRAFFIC_CONE && aDamageIndexAfterDamage == 1 && aBodyReanim)
-        {
-            aBodyReanim->SetImageOverride("anim_cone", IMAGE_REANIM_ZOMBIE_CONE2);
-        }
-        else if (mHelmType == HelmType::HELMTYPE_TRAFFIC_CONE && aDamageIndexAfterDamage == 2 && aBodyReanim)
-        {
-            aBodyReanim->SetImageOverride("anim_cone", IMAGE_REANIM_ZOMBIE_CONE3);
-        }
-        else if (mHelmType == HelmType::HELMTYPE_PAIL && aDamageIndexAfterDamage == 1)
-        {
-            aBodyReanim->SetImageOverride("anim_bucket", IMAGE_REANIM_ZOMBIE_BUCKET2);
-        }
-        else if (mHelmType == HelmType::HELMTYPE_PAIL && aDamageIndexAfterDamage == 2)
-        {
-            TOD_ASSERT(aBodyReanim);
-            aBodyReanim->SetImageOverride("anim_bucket", IMAGE_REANIM_ZOMBIE_BUCKET3);
-        }
-        else if (mHelmType == HelmType::HELMTYPE_DIGGER && aDamageIndexAfterDamage == 1)
-        {
-            TOD_ASSERT(aBodyReanim);
-            aBodyReanim->SetImageOverride("Zombie_digger_hardhat", IMAGE_REANIM_ZOMBIE_DIGGER_HARDHAT2);
-        }
-        else if (mHelmType == HelmType::HELMTYPE_DIGGER && aDamageIndexAfterDamage == 2)
-        {
-            TOD_ASSERT(aBodyReanim);
-            aBodyReanim->SetImageOverride("Zombie_digger_hardhat", IMAGE_REANIM_ZOMBIE_DIGGER_HARDHAT3);
-        }
-        else if (mHelmType == HelmType::HELMTYPE_FOOTBALL && aDamageIndexAfterDamage == 1)
+        if (mHelmType == HelmType::HELMTYPE_FOOTBALL && aDamageIndexAfterDamage == 1)
         {
             TOD_ASSERT(aBodyReanim);
             aBodyReanim->SetImageOverride("zombie_football_helmet", IMAGE_REANIM_ZOMBIE_FOOTBALL_HELMET2);
