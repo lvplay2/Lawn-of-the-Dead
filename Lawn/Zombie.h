@@ -59,11 +59,12 @@ enum ZombieParts
     PART_POGO,
     PART_HEAD_DIZZY,
     PART_SHIELD,
-    PART_GLASSES,
+    PART_NEWSPAPER,
     PART_DIGGER,
     PART_BODY_DANCE_MJ,
     PART_BODY_DANCE,
     PART_HELMET,
+    PART_GLASSES,
 };
 
 class ZombieDrawPosition

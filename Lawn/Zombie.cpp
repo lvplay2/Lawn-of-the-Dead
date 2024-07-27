@@ -2565,8 +2565,7 @@ void Zombie::UpdateZombieDigger()
         {
             mAltitude = 0.0f;
             mZombiePhase = ZombiePhase::PHASE_DIGGER_STUNNED;
-            mPhaseCounter = 40;
-            PlayZombieReanim("anim_dizzy", ReanimLoopType::REANIM_LOOP, 10, 12.0f);
+            mPhaseCounter = 200;
         }
     }
     else if (mZombiePhase == ZombiePhase::PHASE_DIGGER_TUNNELING_PAUSE_WITHOUT_AXE)
@@ -2617,7 +2616,7 @@ void Zombie::UpdateZombieDigger()
         if (mPhaseCounter == 0)
         {
             mZombiePhase = ZombiePhase::PHASE_DIGGER_WALKING;
-            StartWalkAnim(20);
+            PickRandomSpeed();
         }
     }
 }
@@ -4966,7 +4965,17 @@ void Zombie::DrawZombieHead(Graphics* g, const ZombieDrawPosition& theDrawPos, i
     {
         if (mZombiePhase == ZombiePhase::PHASE_DIGGER_STUNNED)
         {
-            DrawZombiePart(g, IMAGE_ZOMBIE, mFrame, ZombieParts::PART_HEAD_DIZZY, theDrawPos);
+            int aDizzyFrame;
+            mAnimCounter++;
+            if (mAnimCounter >= mAnimFrames * mAnimTicksPerFrame)
+            {
+                mAnimCounter = 0;
+            }
+            aDizzyFrame = mAnimCounter / mAnimTicksPerFrame;
+            ZombieDrawPosition aDizzyPos = theDrawPos;
+            aDizzyPos.mImageOffsetX = aDizzyPos.mHeadX - 50;
+            aDizzyPos.mImageOffsetY = aDizzyPos.mHeadY - 2;
+            DrawZombiePart(g, IMAGE_ZOMBIE, ClampInt(aDizzyFrame, 0, 9), ZombieParts::PART_HEAD_DIZZY, aDizzyPos);
         }
         else
             DrawZombiePart(g, IMAGE_ZOMBIE, mFrame, ZombieParts::PART_HEAD, theDrawPos);
