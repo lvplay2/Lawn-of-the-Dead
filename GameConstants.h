@@ -62,4 +62,4 @@ const bool			HAS_QUICKPLAY = false;
 const bool			HAS_ACHIEVEMENTS = false;
 const bool			HAS_PAGE_SELECTOR = false;
 const bool			HAS_FAST_FOWARD_BUTTON = false;
-const bool			HAS_CUSTOM_CURSOR = true;
+const bool			HAS_CUSTOM_CURSOR = false;

@@ -149,32 +149,20 @@ void TitleScreen::Draw(Graphics* g)
 	}
 	g->DrawImage(IMAGE_PVZ_LOGO, mWidth / 2 - IMAGE_PVZ_LOGO->mWidth / 2, aLogoY);
 
-	int aGrassX = mStartButton->mX;
-	int aGrassY = mStartButton->mY - 17;
-	g->DrawImage(IMAGE_LOADBAR_DIRT, aGrassX, aGrassY + 18);
+	int aGrassX = mStartButton->mX + 30;
+	int aGrassY = mStartButton->mY;
 
-	if (mCurBarWidth >= mTotalBarWidth)
+	Graphics aClipG(*g);
+	aClipG.ClipRect(mWidth / 2 - IMAGE_LOADERBAR->mWidth, aGrassY, mCurBarWidth, IMAGE_LOADERBAR->mHeight);
+	if (mCurBarWidth = mTotalBarWidth)
 	{
-		g->DrawImage(IMAGE_LOADBAR_GRASS, aGrassX, aGrassY);
-
-		if (mLoadingThreadComplete)
-		{
-			DrawToPreload(g);
-		}
+		aClipG.DrawImage(IMAGE_LOADERBAROVER, aGrassX, aGrassY);
+		aClipG.DrawImage(IMAGE_LOADER_PLAY, aGrassX + 50, aGrassY);
 	}
 	else
 	{
-		Graphics aClipG(*g);
-		aClipG.ClipRect(240, aGrassY, mCurBarWidth, IMAGE_LOADBAR_GRASS->mHeight);
-		aClipG.DrawImage(IMAGE_LOADBAR_GRASS, aGrassX, aGrassY);
-
-		float aRollLen = mCurBarWidth * 0.94f;
-		float aRotation = -aRollLen / 180 * PI * 2;
-		float aScale = TodAnimateCurveFloatTime(0, mTotalBarWidth, mCurBarWidth, 1, 0.5f, TodCurves::CURVE_LINEAR);
-		SexyTransform2D aTransform;
-		TodScaleRotateTransformMatrix(aTransform, aGrassX + 11.0f + aRollLen, aGrassY - 3.0f - 35.0f * aScale + 35.0f, aRotation, aScale, aScale);
-		Rect aSrcRect(0, 0, IMAGE_REANIM_SODROLLCAP->mWidth, IMAGE_REANIM_SODROLLCAP->mHeight);
-		TodBltMatrix(g, IMAGE_REANIM_SODROLLCAP, aTransform, g->mClipRect, Color::White, g->mDrawMode, aSrcRect);
+		aClipG.DrawImage(IMAGE_LOADERBAR, aGrassX, aGrassY);
+		aClipG.DrawImage(IMAGE_LOADERBARLOADING, aGrassX + 50, aGrassY);
 	}
 
 	Reanimation* aReanim = nullptr;
@@ -271,9 +259,8 @@ void TitleScreen::Update()
 	{
 		mNeedToInit = false;
 
-		mStartButton->mLabel = TodStringTranslate(_S("[LOADING]"));
 		mStartButton->SetFont(FONT_BRIANNETOD16);
-		mStartButton->Resize(mWidth / 2 - IMAGE_LOADBAR_DIRT->mWidth / 2, 650, mTotalBarWidth, 50);
+		mStartButton->Resize(mWidth / 2 - IMAGE_LOADERBAR->mWidth / 2, mHeight / 2 - IMAGE_LOADERBAR->mHeight / 2, mTotalBarWidth, 50);
 		mStartButton->mVisible = true;
 
 		float aEstimatedTotalLoadTime;
@@ -294,16 +281,7 @@ void TitleScreen::Update()
 
 	float aLoadingPercent = (aCurrentProgress - mBarStartProgress) / (1 - mBarStartProgress);
 
-	int aButtonY;
-	if (mTitleStateCounter > 10)
-	{
-		aButtonY = TodAnimateCurve(60, 10, mTitleStateCounter, 650, 534, TodCurves::CURVE_EASE_IN);
-	}
-	else
-	{
-		aButtonY = TodAnimateCurve(10, 0, mTitleStateCounter, 534, 529, TodCurves::CURVE_BOUNCE);
-	}
-	mStartButton->Resize(mStartButton->mX, aButtonY, mTotalBarWidth, mStartButton->mHeight);
+	mStartButton->Resize(mWidth / 2 - IMAGE_LOADERBAR->mWidth, mHeight - (IMAGE_LOADERBAR->mHeight * 8), mTotalBarWidth, mStartButton->mHeight);
 
 	if (mTitleStateCounter > 0)
 	{
@@ -323,7 +301,6 @@ void TitleScreen::Update()
 	}
 	else if (mCurBarWidth > mTotalBarWidth)
 	{
-		mStartButton->mLabel = TodStringTranslate(_S("[CLICK_TO_START]"));
 		mCurBarWidth = mTotalBarWidth;
 	}
 
@@ -414,55 +391,6 @@ void TitleScreen::Update()
 		else
 		{
 			mStartButton->SetVisible(true);
-		}
-	}
-
-	float aTriggerPoint[] = { 
-		mTotalBarWidth * 0.11f, 
-		mTotalBarWidth * 0.32f, 
-		mTotalBarWidth * 0.54f, 
-		mTotalBarWidth * 0.72f, 
-		mTotalBarWidth * 0.91f 
-	};
-
-	for (int i = 0; i < LENGTH(aTriggerPoint); i++)
-	{
-		if (aPrevWidth < aTriggerPoint[i] && mCurBarWidth >= aTriggerPoint[i])
-		{
-			ReanimationType aReanimType = ReanimationType::REANIM_LOADBAR_SPROUT;
-			if (i == 4)
-			{
-				aReanimType = ReanimationType::REANIM_LOADBAR_ZOMBIEHEAD;
-			}
-			float aPosX = aTriggerPoint[i] + 225.0f;
-			float aPosY = 511.0f;
-			Reanimation* aSproutReanim = mApp->AddReanimation(aPosX, aPosY, 0, aReanimType);
-			aSproutReanim->mAnimRate = 18.0f;
-			aSproutReanim->mLoopType = ReanimLoopType::REANIM_PLAY_ONCE_AND_HOLD;
-
-			if (i == 1 || i == 3)
-			{
-				aSproutReanim->OverrideScale(-1.0f, 1.0f);
-			}
-			else if (i == 2)
-			{
-				aSproutReanim->SetPosition(aPosX, aPosY - 5.0f);
-				aSproutReanim->OverrideScale(1.1f, 1.3f);
-			}
-			else if (i == 4)
-			{
-				aSproutReanim->SetPosition(aPosX - 20.0f, aPosY);
-			}
-
-			if (i == 4)
-			{
-				mApp->PlaySample(SOUND_LOADINGBAR_FLOWER);
-				mApp->PlaySample(SOUND_LOADINGBAR_ZOMBIE);
-			}
-			else
-			{
-				mApp->PlaySample(SOUND_LOADINGBAR_FLOWER);
-			}
 		}
 	}
 }

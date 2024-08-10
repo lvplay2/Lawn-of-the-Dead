@@ -1064,6 +1064,7 @@
     <ResourceCompile Include="LawnProject.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\LawnIcon.ico" />
     <Image Include="..\main_icon.ico" />
   </ItemGroup>
   <ItemGroup>
