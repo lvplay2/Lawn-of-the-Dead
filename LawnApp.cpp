@@ -130,7 +130,7 @@ LawnApp::LawnApp()
 	isFastMode = false;
 	mProdName = "LawnOfTheDead";
 	mVersion = "0.94";
-	mReconVersion = "PvZ: QoTL " + mVersion;
+	mReconVersion = "LOTD - " + mVersion;
 	std::string aTitleName = "Lawn of the Dead";
 	aTitleName += " - " + mVersion;
 #ifdef _DEBUG
