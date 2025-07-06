@@ -129,12 +129,12 @@ LawnApp::LawnApp()
 	mDebugKeysEnabled = false;
 	isFastMode = false;
 	mProdName = "LawnOfTheDead";
-	mVersion = "v2.0";
+	mVersion = "0.94";
 	mReconVersion = "PvZ: QoTL " + mVersion;
 	std::string aTitleName = "Lawn Of The Dead";
-	aTitleName += " " + mVersion;
+	aTitleName += " - " + mVersion;
 #ifdef _DEBUG
-	aTitleName += " DEBUG";
+	aTitleName += " ";
 #endif
 
 	mTitle = StringToSexyStringFast(aTitleName);
