@@ -277,6 +277,11 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
 		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
 		mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
+
+		LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_DRUMS, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_HIHATS, "sounds\\mainmusic_hihats.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -287,6 +292,10 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 	case MusicTune::MUSIC_TUNE_NIGHT_MOONGRAINS:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
 		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
+
+		LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_DRUMS, "sounds\\mainmusic.mo3");
+
 		if (theOffset == -1)
 		{
 			theOffset = 0x80000030;
@@ -300,6 +309,11 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
 		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
 		mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_DRUMS, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_HIHATS, "sounds\\mainmusic_hihats.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0x8000005E;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -311,6 +325,11 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
 		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
 		mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_DRUMS, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_HIHATS, "sounds\\mainmusic_hihats.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0x8000007D;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -322,6 +341,11 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
 		mCurMusicFileDrums = MusicFile::MUSIC_FILE_DRUMS;
 		mCurMusicFileHihats = MusicFile::MUSIC_FILE_HIHATS;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_DRUMS, "sounds\\mainmusic.mo3");
+	    LoadSong(MusicFile::MUSIC_FILE_HIHATS, "sounds\\mainmusic_hihats.mo3");
+		
 		if (theOffset == -1)
 			theOffset = 0x800000B8;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -331,6 +355,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_CHOOSE_YOUR_SEEDS:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0x8000007A;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -338,6 +365,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_TITLE_CRAZY_DAVE_MAIN_THEME:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\openingmusic.ogg");
+
 		if (theOffset == -1)
 			theOffset = 0;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -345,6 +375,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_ZEN_GARDEN:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0xDD;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -352,6 +385,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_PUZZLE_CEREBRAWL:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0xB1;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -359,6 +395,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_MINIGAME_LOONBOON:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0xA6;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -366,6 +405,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_CONVEYER:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0xD4;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -373,6 +415,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_FINAL_BOSS_BRAINIAC_MANIAC:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
+
+        LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+
 		if (theOffset == -1)
 			theOffset = 0x9E;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
@@ -380,6 +425,9 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 
 	case MusicTune::MUSIC_TUNE_CREDITS_ZOMBIES_ON_YOUR_LAWN:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_CREDITS_ZOMBIES_ON_YOUR_LAWN;
+
+        LoadSong(MusicFile::MUSIC_FILE_CREDITS_ZOMBIES_ON_YOUR_LAWN, "sounds\\ZombiesOnYourLawn.ogg");
+
 		if (theOffset == -1)
 			theOffset = 0;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
