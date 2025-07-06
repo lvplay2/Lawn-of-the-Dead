@@ -1,10 +1,10 @@
-# PvZ Quality of the Lawn-Decompile
- A edit of the PvZ Decompile that adds QoL features
+# Lawn of the Dead (Recreation)
+A recreation of an early version of Plants vs. Zombies called Lawn of the Dead.
 
-# Credits:
-Electr0Gunner.
+# Building
+**IMPORTANT:** Make sure to use the Debug folder along with the executables, as these binaries won't work with the original game assets.
+#### Visual Studio
+Open the solution file "PlantsVsZombies.sln" with Visual Studio and compile from there.
 
-Creators of OG Decompile.
-
-PvZ Modding Association Members.
-(BreakfastBrainz2, InLiothixie, omeji_)
+#### Build Tools for Visual Studio (MSBuild)
+Go to the root directory of this project and run ``` msbuild PlantsVsZombies.sln ```.
