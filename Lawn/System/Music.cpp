@@ -81,7 +81,12 @@ bool Music::TodLoadMusic(MusicFile theMusicFile, const std::string& theFileName)
 		p_fclose(pFile);  
 		
 		aStream = gBass->BASS_StreamCreateFile(true, aData, 0, aSize, 0);
-		TOD_ASSERT(gMusicFileData[theMusicFile].mFileData == nullptr);
+
+		if (gMusicFileData[theMusicFile].mFileData != nullptr)
+        {
+           return true;
+        }
+
 		gMusicFileData[theMusicFile].mFileData = (unsigned int*)aData;
 
 		if (aStream == NULL)
