@@ -95,13 +95,13 @@ BEGIN
     BEGIN
         BLOCK "040904b0"
         BEGIN
-            VALUE "CompanyName", "TODO: <Company name>"
-            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "CompanyName", "PopCap Games"
+            VALUE "FileDescription", "Lawn of the Dead 0.94"
             VALUE "FileVersion", "1.0.0.1"
             VALUE "InternalName", "LawnProj.exe"
-            VALUE "LegalCopyright", "Copyright (C) 2024"
+            VALUE "LegalCopyright", "Copyright (C) 2008"
             VALUE "OriginalFilename", "LawnProj.exe"
-            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductName", "Lawn of the Dead - 0.94"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
