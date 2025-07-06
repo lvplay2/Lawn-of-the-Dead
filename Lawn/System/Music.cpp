@@ -168,7 +168,7 @@ void Music::LoadSong(MusicFile theMusicFile, const std::string& theFileName)
 
 void Music::MusicTitleScreenInit()
 {
-	LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\mainmusic.mo3");
+	LoadSong(MusicFile::MUSIC_FILE_MAIN_MUSIC, "sounds\\openingmusic.ogg");
 	MakeSureMusicIsPlaying(MusicTune::MUSIC_TUNE_TITLE_CRAZY_DAVE_MAIN_THEME);
 }
 
@@ -339,7 +339,7 @@ void Music::PlayMusic(MusicTune theMusicTune, int theOffset, int theDrumsOffset)
 	case MusicTune::MUSIC_TUNE_TITLE_CRAZY_DAVE_MAIN_THEME:
 		mCurMusicFileMain = MusicFile::MUSIC_FILE_MAIN_MUSIC;
 		if (theOffset == -1)
-			theOffset = 0x80000098;
+			theOffset = 0;
 		PlayFromOffset(mCurMusicFileMain, theOffset, 1.0);
 		break;
 
