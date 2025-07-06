@@ -131,7 +131,7 @@ LawnApp::LawnApp()
 	mProdName = "LawnOfTheDead";
 	mVersion = "0.94";
 	mReconVersion = "PvZ: QoTL " + mVersion;
-	std::string aTitleName = "Lawn Of The Dead";
+	std::string aTitleName = "Lawn of the Dead";
 	aTitleName += " - " + mVersion;
 #ifdef _DEBUG
 	aTitleName += " ";
